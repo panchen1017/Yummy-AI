@@ -61,6 +61,9 @@ public class OllamaTest {
         ChatOptions defaultOptions = ollamaChatModel.getDefaultOptions();
     }
 
+    /**
+     * 计算 1 + 1
+     */
     @Test
     public void test_call() {
         ChatResponse response = ollamaChatModel.call(new Prompt(
@@ -70,6 +73,9 @@ public class OllamaTest {
         log.info("测试结果(call):{}", JSON.toJSONString(response));
     }
 
+    /**
+     * 通过注入的方式，解释图片
+     */
     @Test
     public void test_call_images() {
         // 构建请求信息
