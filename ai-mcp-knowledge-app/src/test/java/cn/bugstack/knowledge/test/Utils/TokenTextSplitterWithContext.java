@@ -13,11 +13,13 @@ public class TokenTextSplitterWithContext {
     private final int chunkOverlap;
 
     public TokenTextSplitterWithContext(int chunkSize, int chunkOverlap) {
+        // 指定每块大小与重叠量，用于生成更平滑的上下文窗口
         this.chunkSize = chunkSize;
         this.chunkOverlap = chunkOverlap;
     }
 
     public List<Document> split(List<Document> documents) {
+        // 将输入文档按分词结果进行窗口切分，附带原始元数据
         List<Document> result = new ArrayList<>();
         for (Document doc : documents) {
             String[] tokens = tokenize(doc.getText());
@@ -39,6 +41,7 @@ public class TokenTextSplitterWithContext {
     }
 
     private String[] tokenize(String text) {
+        // 使用结巴分词进行中文分词，返回词序列
         JiebaSegmenter segmenter = new JiebaSegmenter();
         List<SegToken> segTokens = segmenter.process(text, JiebaSegmenter.SegMode.INDEX);
         return segTokens.stream().map(token -> token.word).toArray(String[]::new);

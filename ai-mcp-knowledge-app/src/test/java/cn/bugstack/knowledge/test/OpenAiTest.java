@@ -60,6 +60,7 @@ public class OpenAiTest {
 
     @Test
     public void test_call() {
+        // 直接调用模型，执行简单数学问题
         ChatResponse response = openAiChatModel.call(new Prompt(
                 "1+1",
                 OpenAiChatOptions.builder()
@@ -71,6 +72,7 @@ public class OpenAiTest {
 
     @Test
     public void test_call_images() {
+        // 多模态输入：传入图片并让模型进行描述
         // 构建请求信息
         UserMessage userMessage = new UserMessage("请描述这张图片的主要内容，并说明图中物品的可能用途。",
                 new Media(MimeType.valueOf(MimeTypeUtils.IMAGE_PNG_VALUE),
@@ -87,6 +89,7 @@ public class OpenAiTest {
 
     @Test
     public void test_stream() throws InterruptedException {
+        // 流式输出：订阅模型输出，逐步接收内容
         CountDownLatch countDownLatch = new CountDownLatch(1);
 
         Flux<ChatResponse> stream = openAiChatModel.stream(new Prompt(
@@ -112,6 +115,7 @@ public class OpenAiTest {
 
     @Test
     public void upload() {
+        // RAG 上传流程：读取文件 -> 分块 -> 写入向量库（示例注释中关闭写入）
         TikaDocumentReader reader = new TikaDocumentReader("./data/file.txt");
 
         List<Document> documents = reader.get();
@@ -127,6 +131,7 @@ public class OpenAiTest {
 
     @Test
     public void chat() {
+        // RAG 问答：从向量库检索相关文档，拼接到系统提示词，提升回答准确性
         String message = "王大瓜今年几岁";
 
         String SYSTEM_PROMPT = """

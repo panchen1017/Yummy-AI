@@ -14,6 +14,7 @@ public class OllamaConfig {
 
     @Bean("ollamaSimpleVectorStore")
     public SimpleVectorStore vectorStore(OllamaApi ollamaApi) {
+        // 内存型向量库：基于 Ollama 的本地 EmbeddingModel（nomic-embed-text）
         OllamaEmbeddingModel embeddingModel = OllamaEmbeddingModel
                 .builder()
                 .ollamaApi(ollamaApi)
@@ -38,6 +39,7 @@ public class OllamaConfig {
      */
     @Bean("ollamaPgVectorStore")
     public PgVectorStore pgVectorStore(OllamaApi ollamaApi, JdbcTemplate jdbcTemplate) {
+        // 持久化向量库：使用 Postgres pgvector 存储 Ollama 生成的嵌入，表名 vector_store_ollama_deepseek
         OllamaEmbeddingModel embeddingModel = OllamaEmbeddingModel
                 .builder()
                 .ollamaApi(ollamaApi)

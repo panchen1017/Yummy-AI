@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "D:\\developtool\\nodejs\\npx.cmd",
+      "args": [
+        "-y",
+        "--verbose",
+        "@modelcontextprotocol/server-filesystem",
+        "D:\\javaproject\\panchen\\testmcp",
+        "D:\\javaproject\\panchen\\testmcp"
+      ]
+    },
+    "mcp-server-computer": {
+      "command": "java",
+      "args": [
+        "-Dfile.encoding=utf-8",
+        "-Dspring.ai.mcp.server.stdio=true",
+        "-jar",
+        "D:\\javaproject\\panchen\\mcp-server-computer\\target\\mcp-server-computer-1.0.0.jar"
+      ]
+    }
+  }
+}

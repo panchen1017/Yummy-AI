@@ -11,9 +11,16 @@ spring:
     url: jdbc:postgresql://43.143.68.96:15432/ai-rag-knowledge
     type: com.zaxxer.hikari.HikariDataSource
   ai:
+    mcp:
+      client:
+        stdio:
+          servers-configuration: classpath:/config/mcp-servers-config.json
     openai:
-      base-url: https://pro-share-aws-api.zcyai.com/
-      api-key: sk-uEA6GlHv4M5QyqWP8f565aF0108a4c859082Af3c462d2f6a
+      base-url: https://apis.itedus.cn
+      api-key: sk-J4IV8mZZsLfRmfEh149155448eE644179871E3E5BaEfF476
+      chat:
+        options:
+          model: gpt-4o
       embedding-model: text-embedding-ada-002
       embedding:
         options:

@@ -47,11 +47,6 @@
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-tika-document-reader</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.huaban</groupId>
-            <artifactId>jieba-analysis</artifactId>
-            <version>1.0.2</version>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework.ai</groupId>
@@ -72,6 +67,12 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.bugstack.mcp</groupId>
+            <artifactId>ai-mcp-knowledge-trigger</artifactId>
+            <version>1.0.0</version>
         </dependency>
 
     </dependencies>

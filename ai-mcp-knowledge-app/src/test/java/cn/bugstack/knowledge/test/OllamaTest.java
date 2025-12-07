@@ -58,6 +58,7 @@ public class OllamaTest {
 
     @Test
     public void test_model() {
+        // 查看默认模型参数选项
         ChatOptions defaultOptions = ollamaChatModel.getDefaultOptions();
     }
 
@@ -66,6 +67,7 @@ public class OllamaTest {
      */
     @Test
     public void test_call() {
+        // 直接调用本地模型 deepseek-r1:1.5b
         ChatResponse response = ollamaChatModel.call(new Prompt(
                 "1+1",
                 OllamaOptions.builder().model("deepseek-r1:1.5b").build()));
@@ -78,6 +80,7 @@ public class OllamaTest {
      */
     @Test
     public void test_call_images() {
+        // 多模态输入：传入图片并让本地模型进行描述
         // 构建请求信息
         UserMessage userMessage = new UserMessage("请描述这张图片的主要内容，并说明图中物品的可能用途。",
                 new Media(MimeType.valueOf(MimeTypeUtils.IMAGE_PNG_VALUE),
@@ -94,6 +97,7 @@ public class OllamaTest {
 
     @Test
     public void test_stream() throws InterruptedException {
+        // 流式输出：订阅本地模型输出，逐步接收内容
         CountDownLatch countDownLatch = new CountDownLatch(1);
 
         Flux<ChatResponse> stream = ollamaChatModel.stream(new Prompt(
@@ -117,6 +121,7 @@ public class OllamaTest {
 
     @Test
     public void upload() {
+        // RAG 上传流程：读取文件 -> 结巴分词 -> 分块 -> 写入 pgvector
         TikaDocumentReader reader = new TikaDocumentReader("./data/file.txt");
 
         List<Document> documents = reader.get();
@@ -135,6 +140,7 @@ public class OllamaTest {
 
     @Test
     public void chat() {
+        // RAG 问答：检索向量库文档，作为上下文增强应答
         String message = "人工智能学科始于哪一年";
 
         String SYSTEM_PROMPT = """
