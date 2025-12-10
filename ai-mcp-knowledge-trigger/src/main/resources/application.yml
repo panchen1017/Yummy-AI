@@ -1,4 +1,0 @@
-# application.yml
-task:
-  cron:
-    csdn-job: "0 */2 * * * ?"

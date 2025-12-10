@@ -13,8 +13,13 @@ spring:
   ai:
     mcp:
       client:
-        stdio:
-          servers-configuration: classpath:/config/mcp-servers-config-3.json
+        request-timeout: 360s
+        sse:
+          connections:
+            mcp-server-csdn:
+              url: http://127.0.0.1:8101
+#        stdio:
+#          servers-configuration: classpath:/config/mcp-servers-config-3.json
     openai:
       base-url: https://apis.itedus.cn
       api-key: sk-J4IV8mZZsLfRmfEh149155448eE644179871E3E5BaEfF476

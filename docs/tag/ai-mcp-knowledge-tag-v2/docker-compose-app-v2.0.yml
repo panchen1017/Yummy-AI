@@ -1,0 +1,66 @@
+version: '3.8'
+# docker-compose -f docker-compose-app-v2.0.yml up -d
+services:
+  ai-mcp-knowledge-app:
+    image: panchen/ai-mcp-knowledge-app:1.1
+#    image: registry.cn-hangzhou.aliyuncs.com/fuzhengwei/ai-mcp-knowledge-app:2.3
+    container_name: ai-mcp-knowledge-app
+    restart: always
+    ports:
+      - "8090:8090"
+    volumes:
+      - ./log:/data/log
+    environment:
+      - TZ=PRC
+      - SERVER_PORT=8090
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://vector_db:5432/ai-rag-knowledge
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - SPRING_AI_OLLAMA_BASE_URL=http://7ede12321d85447fb69d-deepseek-r1-llm-api.gcs-xy1a.jdcloud.com/
+      - SPRING_AI_OLLAMA_EMBEDDING_OPTIONS_NUM_BATCH=512
+      - SPRING_AI_OLLAMA_MODEL=nomic-embed-text
+      - SPRING_AI_OPENAI_BASE_URL=https://apis.itedus.cn
+      - SPRING_AI_OPENAI_API_KEY=sk-J4IV8mZZsLfRmfEh149155448eE644179871E3E5BaEfF476
+      - SPRING_AI_OPENAI_CHAT_OPTIONS_MODEL=gpt-4.1
+      - SPRING_AI_OPENAI_EMBEDDING_MODEL=text-embedding-ada-002
+      - SPRING_AI_RAG_EMBED=nomic-embed-text
+      - SPRING_AI_MCP_CLIENT_REQUEST_TIMEOUT=360s
+      - SPRING_AI_MCP_CLIENT_SSE_CONNECTIONS_MCP_SERVER_CSDN_URL=http://mcp-server-csdn-app:8101
+      - REDIS_SDK_CONFIG_HOST=redis
+      - REDIS_SDK_CONFIG_PORT=6379
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    depends_on:
+      - mcp-server-csdn-app
+    networks:
+      - my-network
+
+  mcp-server-csdn-app:
+    image: panchen/mcp-server-csdn-app:1.0
+#    image: registry.cn-hangzhou.aliyuncs.com/fuzhengwei/mcp-server-csdn-app:1.1
+    container_name: mcp-server-csdn-app
+    restart: always
+    ports:
+      - "8101:8101"
+    volumes:
+      - ./log:/data/log
+    environment:
+      - TZ=PRC
+      - SERVER_PORT=8101
+      - CSDN_API_CATEGORIES=Java小白面试宝典
+      - CSDN_API_COOKIE=fid=20_14888646075-1764590551707-068860; uuid_tt_dd=11_12104650233-1764590551708-835427; UserName=weixin_54138735; UserInfo=0c6cad4db76d480cb2efb8c890053ef8; UserToken=0c6cad4db76d480cb2efb8c890053ef8; UserNick=weixin_54138735; AU=89D; UN=weixin_54138735; BT=1764773400209; p_uid=U010000; c_ab_test=1; csdn_newcert_weixin_54138735=1; _clck=1kmsx5e%5E2%5Eg1l%5E0%5E2164; dc_session_id=10_1765087341067.979921; c_first_ref=default; c_first_page=https%3A//www.csdn.net/; c_dsid=11_1765087341740.046519; c_segment=3; c-sidebar-collapse=0; Hm_lvt_6bcd52f51e9b3dce32bec4a3997715ac=1764588977,1764590552,1764904747,1765087344; HMACCOUNT=66CD07406E0DF38A; dc_sid=88f1badedb45a103628814bbf3eaa41e; vip_auto_popup=1; creative_popup=%7B%22arrowIcon%22%3A%22https%3A//i-operation.csdnimg.cn/images/ce16e44ad48a4f019e83ef26a48123cc.png%22%2C%22img%22%3A%22https%3A//i-operation.csdnimg.cn/images/4172809553fd4c84a67e7c244f203a3d.png%22%2C%22imgStyle%22%3A%22height%3A%2088px%3B%22%2C%22darkCfg%22%3A%7B%7D%2C%22role%22%3A%22write%22%2C%22report%22%3A%7B%22spm%22%3A%223001.11121%22%2C%22extra%22%3A%22%22%7D%2C%22style%22%3A%22%22%2C%22arrowIconStyle%22%3A%22%22%2C%22url%22%3A%22https%3A//mall.csdn.net/vip%3Futm_source%3D251111_vip_blogtopbanner%22%2C%22newTab%22%3Afalse%2C%22userName%22%3A%22weixin_54138735%22%7D; creative_btn_mp=1; c_pref=https%3A//www.csdn.net/; c_ref=https%3A//mp.csdn.net/; c_page_id=default; Hm_lpvt_6bcd52f51e9b3dce32bec4a3997715ac=1765087347; log_Id_pv=3; log_Id_view=89; dc_tos=t6vy4l; log_Id_click=4; SESSION=ec4a1084-80da-48d0-bd6b-6f3f5d830f96
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge

@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class MCPTest {
+    // 测试：集成 MCP 工具到 ChatClient，通过自然语言生成文章并发布到 CSDN
 
 //    /**
 //     * 在 openAI Config 中注入
@@ -22,11 +23,15 @@ public class MCPTest {
 //    @Resource
 //    private ChatClient.Builder chatClientBuilder;
 
+    /**
+     * 已在配置中默认挂载工具，直接使用 ChatClient 即可触发工具调用
+     */
     @Resource
     private ChatClient chatClient;
 
     /**
      * 让 springAI 帮我加载下有哪些服务可以被使用
+     * 工具集合来源自 application-dev.yml 的 MCP 服务器配置，已在 ChatClient Bean 中默认挂载
      */
     @Autowired
     private ToolCallbackProvider tools;
@@ -75,9 +80,15 @@ public class MCPTest {
 //        System.out.println("\n>>> QUESTION: " + userInput);
 //        System.out.println("\n>>> ASSISTANT: " + chatClient.prompt(userInput).call().content());
 //    }
+    /**
+     * 测试里发起 prompt，模型获得工具清单后会按你的指令“生成文章”并“调用发帖工具”。
+     * 工具端使用 Cookie 完成 CSDN 鉴权，把文章标题、内容、标签、摘要发布到你的 CSDN 账号。
+     */
     @Test
     public void test_saveArticle() {
+        // 指令驱动：先生成文章，再调用 CSDN 工具发布
         String userInput;
+        // 生成文章并触发发布
         userInput = """
                 我需要你帮我生成一篇文章，要求如下；
 
@@ -93,6 +104,7 @@ public class MCPTest {
                 """;
 
         System.out.println("\n>>> QUESTION: " + userInput);
+        // 执行对话：模型在需要时调用 MCP CSDN 工具，返回最终结果
         System.out.println("\n>>> ASSISTANT: " + chatClient.prompt(userInput).call().content());
     }
 
